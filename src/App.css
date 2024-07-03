@@ -1,38 +1,58 @@
+@font-face {
+  font-family: 'MiFuente';
+  src: url('./assets/fonts/amongus vector.ttf') format('truetype');
+}
+body {
+  font-family: 'MiFuente', sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34; /* Puedes cambiar el color de fondo si deseas */
+}
+
+
 .App {
   text-align: center;
+  padding: 30px;
+  background: white; /* Fondo blanco para el contenedor */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.welcome-screen h1{
+  text-align: center;
+  font-family: 'MiFuente', sans-serif;
+  font-size: 3rem;
+  padding: 20px 30px;
+  cursor: pointer;
+}
+.welcome-screen button, .name-screen button {
+  font-family: 'MiFuente', sans-serif;
+  font-size: 3rem;
+  padding: 20px 30px;
+  cursor: pointer;
+  border-radius: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.name-screen h2 {
+  font-size: 3rem;
+  margin-bottom: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.name-screen input {
+  font-family: 'MiFuente', sans-serif;
+  font-size: 2rem;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: block;
+  margin: 30px;
+  border-radius: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.name-screen button {
+  font-family: 'MiFuente', sans-serif;
+  font-size: 2rem;
+  padding: 20px 30px;
+  cursor: pointer;
 }
