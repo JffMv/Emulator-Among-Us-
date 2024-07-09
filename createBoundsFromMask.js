@@ -15,7 +15,25 @@ PNG.decode('shipmask.png', function (data) {
     }
   }
   fs.writeFileSync(
-    './mapBounds.js',
+    './src/mapBounds.js',
     'export const mapBounds = ' + JSON.stringify(result),
+  );
+});
+
+PNG.decode('shipmask_TASK.png', function (data) {
+  const result = {};
+  for (let i = 0; i < data.length; i += 4) {
+    const row = Math.floor(i / 4 / IMG_WIDTH);
+    if (data[i] === 255 && data[i + 1] === 0 && data[i + 2] === 0) {
+      if (result[row]) {
+        result[row].push((i / 4) % IMG_WIDTH);
+      } else {
+        result[row] = [(i / 4) % IMG_WIDTH];
+      }
+    }
+  }
+  fs.writeFileSync(
+      './src/mapTask.js',
+      'export const mapTask = ' + JSON.stringify(result),
   );
 });

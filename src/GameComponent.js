@@ -50,7 +50,6 @@ class MyGame extends Phaser.Scene {
         player.nameText.setOrigin(0.5,0.5);
         player.nameText.setDepth(1);
 
-
         this.anims.create({
             key: 'running',
             frames: this.anims.generateFrameNumbers('player'),
