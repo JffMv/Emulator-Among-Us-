@@ -16,15 +16,20 @@ export const WebSocketProvider = ({ children }) => {
 
         ws.onmessage = (event) => {
             try {
+                // Parseamos el string JSON recibido
                 const data = JSON.parse(event.data);
-                if (data.type === 'playerUpdate') {
-                    setPlayers(data.players);
-                    console.log('Received player update:', data.players);
+
+                // Verificamos si el objeto parseado es directamente el objeto de jugadores
+                if (typeof data === 'object' && !Array.isArray(data) && data !== null) {
+                    // Si es así, actualizamos los jugadores directamente
+                    setPlayers(data);
+                    console.log('Received player update:', data);
                 } else {
+                    // Si no, manejamos como un mensaje genérico
                     console.log('Received message:', data);
                 }
             } catch (error) {
-                // El mensaje no es JSON, manejarlo como texto plano
+                console.error('Error processing message:', error);
                 console.log('Received non-JSON message:', event.data);
             }
         };
