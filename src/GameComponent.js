@@ -15,6 +15,8 @@ import {
 } from './constants';
 import { movePlayer } from './movement';
 import { animateMovement } from './animation';
+import {movementOtherPlayers} from "./movementOtherPlayers";
+
 
 const GameComponent = ({ playerName, playerId }) => {
     const gameRef = useRef(null);
@@ -126,8 +128,11 @@ const GameComponent = ({ playerName, playerId }) => {
 
         // Actualizar otros jugadores
         Object.entries(this.players).forEach(([id, playerData]) => {
+
             if (id !== playerId) {
                 if (!this.otherPlayers[id]) {
+                    console.log(playerData, ' holaaaaaaa el id de otherplayer is ')
+
                     const newPlayer = {
                         sprite: this.add.sprite(playerData.x, playerData.y, 'player'),
                         nameText: this.add.text(playerData.x, playerData.y - 30, playerData.name, {
@@ -139,17 +144,25 @@ const GameComponent = ({ playerName, playerId }) => {
                     newPlayer.sprite.displayHeight = PLAYER_HEIGHT;
                     newPlayer.sprite.displayWidth = PLAYER_WIDTH;
                     newPlayer.nameText.setOrigin(0.5, 0.5);
-                    newPlayer.sprite.play('running');
                     this.otherPlayers[id] = newPlayer;
+
                 } else {
+                    // Girar el sprite según la dirección
+                    if (playerData.key === 'ArrowLeft') {
+                        this.otherPlayers[id].sprite.setFlipX(true);
+                    } else if (playerData.key === 'ArrowRight') {
+                        this.otherPlayers[id].sprite.setFlipX(false);
+                    }
+
                     this.otherPlayers[id].sprite.setPosition(playerData.x, playerData.y);
                     this.otherPlayers[id].nameText.setPosition(playerData.x, playerData.y - 30);
 
-                    if (playerData.key) {
-                        this.otherPlayers[id].sprite.play('running', true);
-                    } else if (playerData.moveEnd) {
-                        this.otherPlayers[id].sprite.stop();
-                    }
+                    // Usar animateMovement para los otros jugadores
+                    const playerKeys = playerData.key ? [playerData.key] : [];
+
+                    animateMovement(playerKeys, this.otherPlayers[id].sprite);
+
+
                 }
             }
         });
