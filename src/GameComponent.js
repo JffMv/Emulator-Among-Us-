@@ -126,12 +126,16 @@ const GameComponent = ({ playerName, playerId }) => {
         animateMovement(this.pressedKeys, this.player.sprite);
         this.player.nameText.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
 
+        // Crear un conjunto de IDs de jugadores activos
+        const activePlayerIds = new Set(Object.keys(this.players));
+
+
         // Actualizar otros jugadores
         Object.entries(this.players).forEach(([id, playerData]) => {
 
-            if (id !== playerId) {
+            if (playerData.playerId !== playerId) {
                 if (!this.otherPlayers[id]) {
-                    console.log(playerData, ' holaaaaaaa el id de otherplayer is ')
+                    console.log(playerData, ' holaaaaaaa el id de otherplayer is ', this.otherPlayers[id])
 
                     const newPlayer = {
                         sprite: this.add.sprite(playerData.x, playerData.y, 'player'),
@@ -145,6 +149,7 @@ const GameComponent = ({ playerName, playerId }) => {
                     newPlayer.sprite.displayWidth = PLAYER_WIDTH;
                     newPlayer.nameText.setOrigin(0.5, 0.5);
                     this.otherPlayers[id] = newPlayer;
+                    console.log(newPlayer, "aca estosyyyyyyyyyyyy");
 
                 } else {
                     // Girar el sprite según la dirección
@@ -162,8 +167,14 @@ const GameComponent = ({ playerName, playerId }) => {
 
                     animateMovement(playerKeys, this.otherPlayers[id].sprite);
 
-
                 }
+            }
+        });
+        Object.keys(this.otherPlayers).forEach(id => {
+            if (!activePlayerIds.has(id)) {
+                this.otherPlayers[id].sprite.destroy();
+                this.otherPlayers[id].nameText.destroy();
+                delete this.otherPlayers[id];
             }
         });
     }
