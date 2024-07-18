@@ -126,6 +126,7 @@ const GameComponent = ({ playerName, playerId }) => {
         animateMovement(this.pressedKeys, this.player.sprite);
         this.player.nameText.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
 
+
         // Crear un conjunto de IDs de jugadores activos
         const activePlayerIds = new Set(Object.keys(this.players));
 
