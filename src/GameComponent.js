@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { WebSocketContext } from './WebSocketContext';
 import shipImg from './assets/ship.png';
 import playerSprite from './assets/player.png';
+import Task from './assets/tasks/Tarea.webp';
 
 import {
     PLAYER_SPRITE_HEIGHT,
@@ -15,12 +16,14 @@ import {
 } from './constants';
 import { movePlayer } from './movement';
 import { animateMovement } from './animation';
-import {movementOtherPlayers} from "./movementOtherPlayers";
+
+import {playerTask} from "./movementTASK";
 
 
 const GameComponent = ({ playerName, playerId }) => {
     const gameRef = useRef(null);
     const { players, sendAction } = useContext(WebSocketContext);
+    let taskActive = false;
 
     useEffect(() => {
         const config = {
@@ -49,11 +52,16 @@ const GameComponent = ({ playerName, playerId }) => {
         }
     }, [players]);
 
+
     function preload() {
         this.load.image('ship', shipImg);
         this.load.spritesheet('player', playerSprite, {
             frameWidth: PLAYER_SPRITE_WIDTH,
             frameHeight: PLAYER_SPRITE_HEIGHT,
+        });
+        this.load.image('taskImage', Task);
+        this.load.on('filecomplete-image-taskImage', () => {
+            console.log('Imagen de tarea cargada correctamente');
         });
     }
 
@@ -119,13 +127,18 @@ const GameComponent = ({ playerName, playerId }) => {
                     name: playerName,
                     moveEnd: true
                 });
-                sendAction({ id: playerId, name: playerName, moveEnd: true });
+                sendAction({id: playerId, name: playerName, moveEnd: true});
             }
             this.player.movedLastFrame = false;
         }
         animateMovement(this.pressedKeys, this.player.sprite);
         this.player.nameText.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
+        console.log(playerTask(this.player.sprite), " esta activo??")
 
+        if (!playerTask(this.player.sprite)) {
+            showTaskWindow.call(this);
+        }
+        if (playerTask(this.player.sprite)) {
 
         // Crear un conjunto de IDs de jugadores activos
         const activePlayerIds = new Set(Object.keys(this.players));
@@ -179,6 +192,77 @@ const GameComponent = ({ playerName, playerId }) => {
             }
         });
     }
+    }
+    function showTaskWindow() {
+        const playerX = this.player.sprite.x;
+        const playerY = this.player.sprite.y;
+        const windowWidth = 400;
+        const windowHeight = 350;
+
+        // Crear un fondo semitransparente
+        const overlay = this.add.rectangle(playerX, playerY, windowWidth, windowHeight, 0x000000, 0.7);
+        overlay.setOrigin(0.5);
+        overlay.setDepth(100);
+
+        // Mostrar la imagen de la tarea
+        const taskImage = this.add.image(playerX, playerY, 'taskImage');
+        taskImage.setDisplaySize(windowWidth, windowHeight);
+        taskImage.setDepth(101);
+
+        // Crear el botón
+        const button = this.add.rectangle(playerX + windowWidth/2 - 50, playerY + windowHeight/2 - 30, 80, 40, 0x00ff00);
+        button.setDepth(102);
+        button.setInteractive({ useHandCursor: true });  // Esto habilita el cursor de mano
+
+        const buttonText = this.add.text(button.x, button.y, 'Mantener', { fontSize: '16px', fill: '#000' });
+        buttonText.setOrigin(0.5);
+        buttonText.setDepth(103);
+
+        let holdTime = 0;
+        const requiredHoldTime = 3000; // 3 segundos
+        let holdInterval;
+
+        button.on('pointerdown', () => {
+            holdTime = 0;
+            holdInterval = this.time.addEvent({
+                delay: 100,
+                callback: () => {
+                    holdTime += 100;
+                    if (holdTime >= requiredHoldTime) {
+                        overlay.destroy();
+                        taskImage.destroy();
+                        button.destroy();
+                        buttonText.destroy();
+                        this.taskActive = false;
+                        if (holdInterval) holdInterval.remove();
+                    }
+                },
+                loop: true
+            });
+        });
+
+        button.on('pointerup', () => {
+            holdTime = 0;
+            if (holdInterval) holdInterval.remove();
+        });
+
+        button.on('pointerout', () => {
+            holdTime = 0;
+            if (holdInterval) holdInterval.remove();
+        });
+
+        // Cambiar el color del botón cuando el mouse está sobre él
+        button.on('pointerover', () => {
+            button.setFillStyle(0x00dd00);  // Un verde más claro
+        });
+
+        button.on('pointerout', () => {
+            button.setFillStyle(0x00ff00);  // Volver al color original
+        });
+
+        this.taskActive = true;
+    }
+
 
     return <div id="phaser-example"></div>;
 };
