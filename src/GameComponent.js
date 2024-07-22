@@ -5,6 +5,7 @@ import { WebSocketContext } from './WebSocketContext';
 import shipImg from './assets/ship.png';
 import playerSprite from './assets/player.png';
 import Task from './assets/tasks/Tarea.webp';
+import obtenerGrupoJugador from './ObtainGroupOfPlayer'
 
 import {
     PLAYER_SPRITE_HEIGHT,
@@ -133,9 +134,11 @@ const GameComponent = ({ playerName, playerId }) => {
         }
         animateMovement(this.pressedKeys, this.player.sprite);
         this.player.nameText.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
-        console.log(playerTask(this.player.sprite), " esta activo??")
+
 
         if (!playerTask(this.player.sprite)) {
+
+            obtenerGrupoJugador(this.player.sprite); // arroja el numero para preguntar por la tarea
             showTaskWindow.call(this);
         }
         if (playerTask(this.player.sprite)) {

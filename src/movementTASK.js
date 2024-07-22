@@ -10,8 +10,7 @@ export const playerTask = (player) => {
     const absPlayerX = player.x + SHIP_WIDTH / 2;
     const absPlayerY = player.y + SHIP_HEIGHT / 2 + 20;
     if (
-        isWithinMovementTasks(absPlayerX, absPlayerY - PLAYER_SPEED) || isWithinMovementTasks(absPlayerX, absPlayerY + PLAYER_SPEED)
-        || isWithinMovementTasks(absPlayerX - PLAYER_SPEED, absPlayerY) || isWithinMovementTasks(absPlayerX + PLAYER_SPEED, absPlayerY)
+        isWithinMovementTasks(absPlayerX, absPlayerY )
     ) {
         playerTask = true;
     }
