@@ -6,6 +6,7 @@ export const WebSocketContext = createContext(null);
 export const WebSocketProvider = ({ children }) => {
     const socketRef = useRef(null);
     const [players, setPlayers] = useState({});
+    const [serverResponse, setServerResponse] = useState(null);
 
     useEffect(() => {
         const ws = new WebSocket('ws://localhost:8080/play');
@@ -16,16 +17,19 @@ export const WebSocketProvider = ({ children }) => {
 
         ws.onmessage = (event) => {
             try {
-                // Parseamos el string JSON recibido
                 const data = JSON.parse(event.data);
 
-                // Verificamos si el objeto parseado es directamente el objeto de jugadores
                 if (typeof data === 'object' && !Array.isArray(data) && data !== null) {
-                    // Si es así, actualizamos los jugadores directamente
-                    setPlayers(data);
-                    console.log('Received player update:', data);
+                    if (data.type === "TASK_AVAILABLE") {
+                        // Si es una respuesta relacionada con tareas, actualizamos serverResponse
+                        setServerResponse(data);
+                        // console.log('Received task response:', data);
+                    } else {
+                        // Si es una actualización de jugadores, actualizamos players
+                        setPlayers(data);
+                        console.log('Received player update:', data);
+                    }
                 } else {
-                    // Si no, manejamos como un mensaje genérico
                     console.log('Received message:', data);
                 }
             } catch (error) {
@@ -61,7 +65,7 @@ export const WebSocketProvider = ({ children }) => {
     };
 
     return (
-        <WebSocketContext.Provider value={{ players, sendAction }}>
+        <WebSocketContext.Provider value={{ players, serverResponse, sendAction }}>
             {children}
         </WebSocketContext.Provider>
     );
