@@ -1,5 +1,20 @@
 // src/WebSocketContext.js
 import React, { createContext, useEffect, useRef, useState } from 'react';
+export function WShostURL() {
+    var host = window.location.hostname;
+    var url = 'ws://' + host + ':8080/play';
+    console.log("WebSocket host URL Calculada: " + url);
+    return url;
+  }
+  
+export function RESThostURL() {
+    var host = window.location.hostname;
+    var protocol = window.location.protocol;
+    var url = protocol + '//' + host + ':8080';
+    console.log("REST host URL Calculada: " + url);
+    return url;
+  }
+
 
 export const WebSocketContext = createContext(null);
 
@@ -8,8 +23,10 @@ export const WebSocketProvider = ({ children }) => {
     const [players, setPlayers] = useState({});
     const [serverResponse, setServerResponse] = useState(null);
 
+    
+
     useEffect(() => {
-        const ws = new WebSocket('ws://localhost:8080/play');
+        const ws = new WebSocket(WShostURL());
 
         ws.onopen = () => {
             console.log('WebSocket connection established');
