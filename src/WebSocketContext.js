@@ -1,19 +1,9 @@
 // src/WebSocketContext.js
 import React, { createContext, useEffect, useRef, useState } from 'react';
-export function WShostURL() {
-    var host = window.location.hostname;
-    var url = 'ws://' + host + ':8080/play';
-    console.log("WebSocket host URL Calculada: " + url);
-    return url;
-  }
+import {WShostURL} from "./WShostURL";
+
   
-export function RESThostURL() {
-    var host = window.location.hostname;
-    var protocol = window.location.protocol;
-    var url = protocol + '//' + host + ':8080';
-    console.log("REST host URL Calculada: " + url);
-    return url;
-  }
+
 
 
 export const WebSocketContext = createContext(null);

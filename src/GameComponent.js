@@ -19,6 +19,7 @@ import { movePlayer } from './movement';
 import { animateMovement } from './animation';
 
 import {playerTask} from "./movementTASK";
+import {RESThostURL} from "./RESThostURL";
 
 
 const GameComponent = ({ playerName, playerId }) => {
@@ -145,6 +146,12 @@ const GameComponent = ({ playerName, playerId }) => {
         this.otherPlayers = {};
         this.players = players;
         this.taskWindowShown = true;
+        this.dictionaryTask = {};
+
+        for (let i = 1; i <= 11; i++) {
+            this.dictionaryTask[i] = true;
+        }
+
         this.showTaskWindow = function() {
             const playerX = this.player.sprite.x;
             const playerY = this.player.sprite.y;
@@ -235,15 +242,48 @@ const GameComponent = ({ playerName, playerId }) => {
         this.player.nameText.setPosition(this.player.sprite.x, this.player.sprite.y - 30);
         }
 
-        if (!playerTask(this.player.sprite)) {
+        if (!playerTask(this.player.sprite) && this.dictionaryTask[obtainGroupOfPlayer(this.player.sprite)] ) {
             //console.log("acaaaaaaaaaaaaaa 1")
-            if (this.taskWindowShown) {
+            if (taskWindowShown) {
+                console.log("Llamo al controller con mostrar window " + taskWindowShown + "el diccionarioooo " + this.dictionaryTask[obtainGroupOfPlayer(this.player.sprite)]);
                 //console.log("acaaaaaaaaaaaaaa check sent" + "this taskWindowShown"+ this.taskWindowShown)
+                /*
                 sendAction({
                     type: "CHECK_TASK",
                     group: obtainGroupOfPlayer(this.player.sprite),
                     id: playerId
-                });
+                });*/
+                const url = `${RESThostURL()}/api/players/${playerId}/tasks/${obtainGroupOfPlayer(this.player.sprite)}`;
+
+                // Hacer la solicitud a la API
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json(); // Asumiendo que la respuesta es en formato JSON
+                    })
+                    .then(data => {
+                        console.log('Data received:', data);
+                        if(!data){
+                            //if ( taskWindowShown){
+                                setTaskWindowShown(false);
+                                gameRef.current.scene.scenes[0].showTaskWindow();
+                                gameRef.current.scene.scenes[0].player.canMove = false;
+                                this.dictionaryTask[obtainGroupOfPlayer(this.player.sprite)] = false;
+                            console.log("Llamo segunda vez al controller con mostrar window" + taskWindowShown + "el diccionarioooo" + this.dictionaryTask[obtainGroupOfPlayer(this.player.sprite)]);
+                            //}
+                        }else {
+                                setTaskWindowShown(true);
+                                if (gameRef.current && gameRef.current.scene.scenes[0]) {
+                                    gameRef.current.scene.scenes[0].player.canMove = true;
+                                }
+                            }
+                    })
+                    .catch(error => {
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+
             }
         }
 
