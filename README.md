@@ -1,72 +1,79 @@
-# Emulator-Among-Us-
-# Getting Started with Create React App
+# Emulator Among Us Frontend
+This is the Front end of Emulator Among Us.    
+[Repository in GitHub here](https://github.com/JffMv/Emulator-Among-Us-Front)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting Started
 
-## Available Scripts
+For clone this repository you use this command:
+ ```
+ git clone https://github.com/JffMv/Emulator-Among-Us-Front.git
+ ```
 
-In the project directory, you can run:
+### Prerequisites
 
-### `npm start`
+Have installed:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+git 2.44 - [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+node.js 22.5.1 - [Install Node.js](https://nodejs.org/en/download/package-manager/current)
 
-### `npm test`
+Back-End - [Clone repository](https://github.com/JffMv/Emulator-Among-Us-Back)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Deployment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The process were building project React with the command:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Then run the project with:
 
-### `npm run eject`
+```
+npm start
+```
+This project run for the port **3000**, so can see work http://localhost:3000
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+If you want add this project into backend java use this command and copy the directory **"build"** in the path /src/resource/ and change the name to **"public"**:
+```
+npm run build
+```
+This project run for the port **8080**, so can see work http://localhost:8080
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Architecture
+![img.png](imagenes/img.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+### React Component: 
+This application based in React and support for one component. Have two screens initials and the call component of phaser
+and WebSocketContext contain component phaser.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Phaser:
+Phaser is the framework speciality in video games for app webs, where tools offer are efficient.
+The implementation functions adds are: 
+- showTaskWindow: Control show tasks.
+- playerMoved: Control move the players.
+- animateMovement: Allow run or stop the animation the player.
+- playerTask: return if the task done. 
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### WebSocketContext:
+This connects, send, close and control of errors with the connection server for Endpoint [ws:domain/play](#).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Built With
 
-### Analyzing the Bundle Size
+* [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - The language used
+* [React](https://reactjs.org/) - Frontend framework
+* [Node.js](https://nodejs.org/en) - Support of Frontend framework
+* [Git](http://git-scm.com/) - Version Control System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## Authors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* **Yeferson Mesa**
 
-### Advanced Configuration
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
+This project is licensed under the MIT License - see the [LICENCE.txt](LICENCE.txt) file for details
